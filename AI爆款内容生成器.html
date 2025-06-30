@@ -99,160 +99,89 @@
             <p class="mt-2 text-lg text-gray-600">交互式产品原型</p>
         </header>
 
-        <!-- Step Indicator -->
-        <div id="step-navigation" class="flex items-center justify-center border border-gray-200 bg-white rounded-full shadow-sm p-2 mb-10">
-            <div id="step-1-indicator" class="step-indicator active w-1/4 text-center rounded-full px-3 py-2">
-                <span class="font-medium">第一步:</span> <span class="hidden sm:inline">主题设定</span>
-            </div>
-            <div id="step-2-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
-                <span class="font-medium">第二步:</span> <span class="hidden sm:inline">搜索过滤</span>
-            </div>
-            <div id="step-3-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
-                <span class="font-medium">第三步:</span> <span class="hidden sm:inline">批量改写</span>
-            </div>
-            <div id="step-4-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
-                <span class="font-medium">第四步:</span> <span class="hidden sm:inline">确认输出</span>
-            </div>
-        </div>
+
 
         <!-- App Views -->
         <div id="app-views">
             <!-- Step 1: Settings -->
             <div id="view-step-1">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                    <!-- 页面标题 -->
-                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-                        <h2 class="text-2xl font-bold text-center">监控爆款主题设定</h2>
-                        <p class="text-center text-blue-100 mt-2">配置监控参数，选择执行方式</p>
-                    </div>
+                <!-- 页面标题 -->
+                <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl mb-8">
+                    <h2 class="text-2xl font-bold text-center">AI爆款内容生成平台</h2>
+                    <p class="text-center text-blue-100 mt-2">选择您需要的功能模块</p>
+                </div>
 
-                    <div class="p-6 sm:p-8">
-                        <!-- 步骤指示器 -->
-                        <div class="flex items-center justify-center mb-8">
-                            <div class="flex items-center space-x-4">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                                    <span class="ml-2 text-sm text-gray-600">基础配置</span>
-                                </div>
-                                <div class="w-8 h-px bg-gray-300"></div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                                    <span class="ml-2 text-sm text-gray-500">执行方式</span>
-                                </div>
-                                <div class="w-8 h-px bg-gray-300"></div>
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                                    <span class="ml-2 text-sm text-gray-500">报告设置</span>
-                                </div>
-                            </div>
+                <!-- 两个独立功能模块 -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                    <!-- 模块1：报告检索设置推送 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-4">
+                            <h3 class="text-lg font-bold flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                报告检索设置推送
+                            </h3>
+                            <p class="text-purple-100 text-sm mt-1">监控爆款内容，定期生成报告</p>
                         </div>
-
-                        <!-- 第一步：基础配置 -->
-                        <div class="mb-8">
-                            <div class="flex items-center mb-4">
-                                <div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">1</div>
-                                <h3 class="text-lg font-semibold text-gray-800">基础配置</h3>
-                            </div>
-                            
-                            <!-- 监控配置 -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                                <div class="bg-gray-50 p-4 rounded-lg">
-                                    <h4 class="font-medium text-gray-800 mb-3 flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        监控目标
-                                    </h4>
-                                    <div class="space-y-4">
-                                        <div>
-                                            <label for="channel-select" class="block text-sm font-medium text-gray-700 mb-1">渠道选择</label>
-                                            <select id="channel-select" class="form-input block w-full rounded-md border-gray-300 shadow-sm">
-                                                <option value="all">全渠道</option>
-                                                <option value="douyin">抖音</option>
-                                                <option value="xiaohongshu">小红书</option>
-                                                <option value="weixin">微信公众号</option>
-                                                <option value="bilibili">B站</option>
-                                                <option value="kuaishou">快手</option>
-                                                <option value="zhihu">知乎</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="hot-keywords" class="block text-sm font-medium text-gray-700 mb-1">爆款关键词</label>
-                                            <input type="text" id="hot-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="创二代, 基业长青, 情感" placeholder="请输入关键词，用逗号分隔">
-                                        </div>
-                                        <div class="grid grid-cols-3 gap-3">
-                                            <div>
-                                                <label for="extract-count" class="block text-sm font-medium text-gray-700 mb-1">提取数量</label>
-                                                <input type="number" id="extract-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="11">
-                                            </div>
-                                            <div>
-                                                <label for="likes-filter" class="block text-sm font-medium text-gray-700 mb-1">点赞过滤</label>
-                                                <input type="number" id="likes-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="50">
-                                            </div>
-                                            <div>
-                                                <label for="comments-filter" class="block text-sm font-medium text-gray-700 mb-1">评论过滤</label>
-                                                <input type="number" id="comments-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="10">
-                                            </div>
+                        
+                        <div class="p-6">
+                            <!-- 检索配置 -->
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-800 mb-3">检索配置</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">监控渠道</label>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="report-channel" value="douyin" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500" checked>
+                                                <span class="ml-2 text-sm text-gray-700">抖音</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="report-channel" value="xiaohongshu" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                <span class="ml-2 text-sm text-gray-700">小红书</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="report-channel" value="bilibili" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                <span class="ml-2 text-sm text-gray-700">B站</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="report-channel" value="kuaishou" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                <span class="ml-2 text-sm text-gray-700">快手</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="report-channel" value="zhihu" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                                <span class="ml-2 text-sm text-gray-700">知乎</span>
+                                            </label>
                                         </div>
                                     </div>
-                                </div>
-                                
-                                <div class="bg-gray-50 p-4 rounded-lg">
-                                    <h4 class="font-medium text-gray-800 mb-3 flex items-center">
-                                        <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-                                        </svg>
-                                        改写规则
-                                    </h4>
-                                    <div class="space-y-4">
+                                    
+                                    <div>
+                                        <label for="report-keywords" class="block text-sm font-medium text-gray-700 mb-1">监控关键词</label>
+                                        <input type="text" id="report-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="创二代, 基业长青, 情感" placeholder="请输入关键词，用逗号分隔">
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-3">
                                         <div>
-                                            <label for="rewrite-keywords" class="block text-sm font-medium text-gray-700 mb-1">文案改写关键词</label>
-                                            <input type="text" id="rewrite-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="主动接棒, 传承" placeholder="请输入改写关键词，用逗号分隔">
+                                            <label for="report-extract-count" class="block text-sm font-medium text-gray-700 mb-1">提取数量</label>
+                                            <input type="number" id="report-extract-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="20">
                                         </div>
                                         <div>
-                                            <label for="rewrite-count" class="block text-sm font-medium text-gray-700 mb-1">文案生成篇数</label>
-                                            <input type="number" id="rewrite-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="4" min="1" max="10">
+                                            <label for="report-likes-filter" class="block text-sm font-medium text-gray-700 mb-1">点赞过滤</label>
+                                            <input type="number" id="report-likes-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="100">
+                                        </div>
+                                        <div>
+                                            <label for="report-comments-filter" class="block text-sm font-medium text-gray-700 mb-1">评论过滤</label>
+                                            <input type="number" id="report-comments-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="20">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 第二步：执行方式 -->
-                        <div class="mb-8">
-                            <div class="flex items-center mb-4">
-                                <div class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">2</div>
-                                <h3 class="text-lg font-semibold text-gray-800">执行方式</h3>
-                            </div>
-                            
-                            <div class="bg-orange-50 p-4 rounded-lg">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-orange-200 transition-colors execution-mode-card">
-                                        <input type="radio" name="execution-mode" value="one-click" class="mt-1 h-4 w-4 text-orange-600 border-gray-300 focus:ring-orange-500" checked>
-                                        <div class="ml-3">
-                                            <span class="block text-sm font-medium text-gray-900">一键生成改写文案</span>
-                                            <span class="block text-xs text-gray-500 mt-1">自动完成所有步骤，快速生成结果</span>
-                                        </div>
-                                    </label>
-                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-orange-200 transition-colors execution-mode-card">
-                                        <input type="radio" name="execution-mode" value="step-by-step" class="mt-1 h-4 w-4 text-orange-600 border-gray-300 focus:ring-orange-500">
-                                        <div class="ml-3">
-                                            <span class="block text-sm font-medium text-gray-900">分步执行</span>
-                                            <span class="block text-xs text-gray-500 mt-1">逐步进行，可精细控制每个环节</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 第三步：报告设置 -->
-                        <div class="mb-8">
-                            <div class="flex items-center mb-4">
-                                <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">3</div>
-                                <h3 class="text-lg font-semibold text-gray-800">报告设置</h3>
-                            </div>
-                            
-                            <div class="bg-purple-50 p-4 rounded-lg">
+                            <!-- 报告生成设置 -->
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-800 mb-3">报告生成设置</h4>
                                 <div class="space-y-4">
                                     <label class="flex items-center cursor-pointer">
                                         <input type="checkbox" id="instant-report" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500" checked>
@@ -266,22 +195,260 @@
                                         <span class="ml-2 text-xs text-gray-500">（设置特定时间生成报告）</span>
                                     </label>
                                     
+                                    <!-- 企业微信说明 -->
+                                    <div class="mt-3 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-r-md">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="text-xs text-blue-700 font-medium">💬 定期报告可在企业微信中查看</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 定时设置 -->
                                     <div id="schedule-time-container" class="ml-7 hidden">
-                                        <label for="schedule-time" class="block text-sm text-gray-600 mb-1">选择定时时间</label>
-                                        <input type="datetime-local" id="schedule-time" class="form-input block w-full max-w-xs text-sm rounded-md border-gray-300 shadow-sm">
+                                        <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                            <h5 class="font-medium text-gray-800 mb-3">定时设置</h5>
+                                            <div class="space-y-4">
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="block text-xs text-gray-500 mb-1">频率类型</label>
+                                                        <select id="schedule-frequency" class="form-input block w-full text-sm rounded-md border-gray-300 shadow-sm">
+                                                            <option value="daily">每天</option>
+                                                            <option value="weekly">每周</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-xs text-gray-500 mb-1">生成时间</label>
+                                                        <select id="schedule-hour" class="form-input block w-full text-sm rounded-md border-gray-300 shadow-sm">
+                                                            <option value="09">09:00</option>
+                                                            <option value="10">10:00</option>
+                                                            <option value="11">11:00</option>
+                                                            <option value="14">14:00</option>
+                                                            <option value="15">15:00</option>
+                                                            <option value="16">16:00</option>
+                                                            <option value="17">17:00</option>
+                                                            <option value="18">18:00</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div id="weekly-day-container" class="hidden">
+                                                    <label class="block text-xs text-gray-500 mb-1">每周哪天</label>
+                                                    <select id="schedule-weekday" class="form-input block w-full text-sm rounded-md border-gray-300 shadow-sm">
+                                                        <option value="1">每周一</option>
+                                                        <option value="2">每周二</option>
+                                                        <option value="3">每周三</option>
+                                                        <option value="4">每周四</option>
+                                                        <option value="5">每周五</option>
+                                                        <option value="6">每周六</option>
+                                                        <option value="0">每周日</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <!-- 微信推送设置 -->
+                                                <div class="pt-3 border-t border-purple-200">
+                                                    <h6 class="text-sm font-medium text-gray-800 mb-2">推送设置</h6>
+                                                    <div class="space-y-3">
+                                                        <div class="bg-white p-3 rounded-md border">
+                                                            <div class="flex justify-between items-center mb-3">
+                                                                <label class="block text-sm text-gray-600">微信推送对象</label>
+                                                                <button id="manage-wechat-users-btn" class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded transition-colors duration-200">
+                                                                    管理微信用户
+                                                                </button>
+                                                            </div>
+                                                            
+                                                            <div id="wechat-users-list" class="space-y-2 max-h-32 overflow-y-auto">
+                                                                <div class="text-center text-gray-400 text-xs py-2">
+                                                                    请先添加微信用户
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="mt-3 pt-2 border-t border-gray-200">
+                                                                <div class="flex items-center text-xs text-gray-500">
+                                                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                    <span>已选择 <span id="selected-users-count">0</span> 位用户推送</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 功能按钮 -->
+                            <div class="mt-6 pt-4 border-t border-purple-200">
+                                <div class="grid grid-cols-1 gap-3">
+                                    <button id="view-scheduled-tasks-btn" class="w-full bg-purple-100 hover:bg-purple-200 text-purple-700 font-medium py-3 px-4 rounded-lg transition-colors duration-200 text-sm flex items-center justify-center">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                        </svg>
+                                        查看历史任务
+                                    </button>
+                                    <button id="start-monitoring-btn" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        生效设置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 模块2：改写文案功能 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-green-600 to-green-700 text-white p-4">
+                            <h3 class="text-lg font-bold flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                </svg>
+                                改写文案功能
+                            </h3>
+                            <p class="text-green-100 text-sm mt-1">智能改写爆款内容，生成原创文案</p>
+                        </div>
+                        
+                        <!-- 改写功能步骤指示器 -->
+                        <div class="border-b border-gray-200 bg-gray-50 px-6 py-3">
+                            <div id="rewrite-step-navigation" class="flex items-center justify-center">
+                                <div class="flex items-center space-x-4">
+                                    <div id="rewrite-step-1-indicator" class="rewrite-step-indicator active flex items-center">
+                                        <div class="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
+                                        <span class="ml-2 text-sm text-green-600 font-medium">主题设定</span>
+                                    </div>
+                                    <div class="w-6 h-px bg-gray-300"></div>
+                                    <div id="rewrite-step-2-indicator" class="rewrite-step-indicator flex items-center">
+                                        <div class="w-6 h-6 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-xs font-bold">2</div>
+                                        <span class="ml-2 text-sm text-gray-500">搜索过滤</span>
+                                    </div>
+                                    <div class="w-6 h-px bg-gray-300"></div>
+                                    <div id="rewrite-step-3-indicator" class="rewrite-step-indicator flex items-center">
+                                        <div class="w-6 h-6 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-xs font-bold">3</div>
+                                        <span class="ml-2 text-sm text-gray-500">批量改写</span>
+                                    </div>
+                                    <div class="w-6 h-px bg-gray-300"></div>
+                                    <div id="rewrite-step-4-indicator" class="rewrite-step-indicator flex items-center">
+                                        <div class="w-6 h-6 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-xs font-bold">4</div>
+                                        <span class="ml-2 text-sm text-gray-500">确认输出</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- 开始按钮 -->
-                        <div class="text-center">
-                            <button id="start-generation-btn" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z"/>
-                                </svg>
-                                开始生成
-                            </button>
+                        
+                        <div class="p-6">
+                            <!-- 内容来源设置 -->
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-800 mb-3">内容来源设置</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">搜索渠道</label>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="rewrite-channel" value="douyin" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500" checked>
+                                                <span class="ml-2 text-sm text-gray-700">抖音</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="rewrite-channel" value="xiaohongshu" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                                                <span class="ml-2 text-sm text-gray-700">小红书</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="rewrite-channel" value="bilibili" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                                                <span class="ml-2 text-sm text-gray-700">B站</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="rewrite-channel" value="kuaishou" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                                                <span class="ml-2 text-sm text-gray-700">快手</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="rewrite-channel" value="zhihu" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                                                <span class="ml-2 text-sm text-gray-700">知乎</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="search-keywords" class="block text-sm font-medium text-gray-700 mb-1">搜索关键词</label>
+                                        <input type="text" id="search-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="创二代, 基业长青, 情感" placeholder="请输入关键词，用逗号分隔">
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div>
+                                            <label for="search-extract-count" class="block text-sm font-medium text-gray-700 mb-1">搜索数量</label>
+                                            <input type="number" id="search-extract-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="15">
+                                        </div>
+                                        <div>
+                                            <label for="search-likes-filter" class="block text-sm font-medium text-gray-700 mb-1">点赞过滤</label>
+                                            <input type="number" id="search-likes-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="50">
+                                        </div>
+                                        <div>
+                                            <label for="search-comments-filter" class="block text-sm font-medium text-gray-700 mb-1">评论过滤</label>
+                                            <input type="number" id="search-comments-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="10">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 改写配置 -->
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-800 mb-3">改写配置</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="rewrite-keywords" class="block text-sm font-medium text-gray-700 mb-1">改写关键词</label>
+                                        <input type="text" id="rewrite-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="主动接棒, 传承" placeholder="请输入改写关键词，用逗号分隔">
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="rewrite-count" class="block text-sm font-medium text-gray-700 mb-1">生成篇数</label>
+                                            <input type="number" id="rewrite-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="4" min="1" max="10">
+                                        </div>
+                                        <div>
+                                            <label for="rewrite-style" class="block text-sm font-medium text-gray-700 mb-1">改写风格</label>
+                                            <select id="rewrite-style" class="form-input block w-full rounded-md border-gray-300 shadow-sm">
+                                                <option value="professional">专业化</option>
+                                                <option value="casual">口语化</option>
+                                                <option value="creative">创意化</option>
+                                                <option value="formal">正式化</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 执行方式 -->
+                            <div class="mb-6">
+                                <h4 class="font-medium text-gray-800 mb-3">执行方式</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-green-200 transition-colors bg-green-50">
+                                        <input type="radio" name="execution-mode" value="one-click" class="mt-1 h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500" checked>
+                                        <div class="ml-3">
+                                            <span class="block text-sm font-medium text-gray-900">一键生成</span>
+                                            <span class="block text-xs text-gray-500 mt-1">自动搜索和改写，快速生成结果</span>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-green-200 transition-colors bg-green-50">
+                                        <input type="radio" name="execution-mode" value="step-by-step" class="mt-1 h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500">
+                                        <div class="ml-3">
+                                            <span class="block text-sm font-medium text-gray-900">分步执行</span>
+                                            <span class="block text-xs text-gray-500 mt-1">逐步进行，可精细控制内容</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 开始改写按钮 -->
+                            <div class="text-center">
+                                <button id="start-generation-btn" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                    </svg>
+                                    开始改写
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -371,6 +538,64 @@
                 <div id="modal-body" class="p-6 overflow-y-auto"></div>
             </div>
         </div>
+
+        <!-- Modal for Scheduled Tasks -->
+        <div id="tasks-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center p-4 z-50">
+            <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[80vh] flex flex-col transform scale-95 opacity-0">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-bold">历史定时任务</h3>
+                    <button id="tasks-modal-close-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div class="p-6 overflow-y-auto">
+                    <div id="tasks-container">
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            <p>暂无定时任务</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for WeChat Users Management -->
+        <div id="wechat-users-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center p-4 z-50">
+            <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col transform scale-95 opacity-0">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-bold">管理微信用户</h3>
+                    <button id="wechat-users-modal-close-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div class="p-6 overflow-y-auto">
+                    <!-- 添加用户表单 -->
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="text-sm font-medium text-gray-800 mb-3">添加新用户</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <input type="text" id="new-user-name" placeholder="姓名" class="form-input block w-full text-sm rounded-md border-gray-300 shadow-sm">
+                            <input type="text" id="new-user-wechat" placeholder="微信号/手机号" class="form-input block w-full text-sm rounded-md border-gray-300 shadow-sm">
+                            <button id="add-wechat-user-btn" class="bg-green-100 hover:bg-green-200 text-green-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 text-sm">
+                                添加用户
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 用户列表 -->
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-800 mb-3">用户列表</h4>
+                        <div id="wechat-users-management-list" class="space-y-2">
+                            <div class="text-center text-gray-400 text-sm py-4">
+                                暂无微信用户，请先添加用户
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t bg-gray-50 flex justify-end">
+                    <button id="wechat-users-save-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-colors duration-200">
+                        保存设置
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -378,9 +603,9 @@
         const mockData = {
             searchResults: [
                 { id: 1, channel: '抖音', enterprise: '企业基业长青的一个...', score: 16656, comments: 509, shares: 771, collections: 1074, original: '关键议题在于接班人，这应该是一次主动的传承，更是对下一代领导者成长的一次完美表达。我认为，家庭和事业的融合，对于培养具备全面视野和深厚情感的接班人至关重要。我一直觉得我们这一代和上一代之间有很多的共同点，我们一起往前走，未来可能我觉得我们这一代人还是相对来讲比较幸运的，首先有上一代或者两代人给我们打下一些基础。这个群体的比例比较小，另一方面是我们面对这个群体的样本...' },
-                { id: 2, channel: '小红书', enterprise: '创二代...', score: 61, comments: 106, shares: 707, collections: 753, original: '“创二代”不仅仅是财富的继承者，更是创新精神的接棒者。他们面临的挑战是如何在父辈的光环下，走出自己的道路，实现企业的二次增长和转型升级。' },
-                { id: 3, channel: '微信公众号', enterprise: '企业...', score: 83, comments: 16, shares: 2, collections: 8, original: '很多企业在谈论“基业长青”时，往往忽略了最核心的情感纽带。没有情感的传承，再好的制度设计也只是空壳。家族企业的魂，在于价值观的代代相传。'},
-                { id: 4, channel: 'B站', enterprise: '新消费品牌...', score: 1204, comments: 88, shares: 150, collections: 300, original: '当前新消费品牌的核心问题在于如何建立品牌护城河。单纯依赖流量投放的模式已经走到尽头，必须回归产品和用户体验的本质，通过情感连接建立忠诚度。'},
+                { id: 2, channel: '抖音', enterprise: '创二代...', score: 61, comments: 106, shares: 707, collections: 753, original: '“创二代”不仅仅是财富的继承者，更是创新精神的接棒者。他们面临的挑战是如何在父辈的光环下，走出自己的道路，实现企业的二次增长和转型升级。' },
+                { id: 3, channel: '抖音', enterprise: '企业...', score: 83, comments: 16, shares: 2, collections: 8, original: '很多企业在谈论“基业长青”时，往往忽略了最核心的情感纽带。没有情感的传承，再好的制度设计也只是空壳。家族企业的魂，在于价值观的代代相传。'},
+                { id: 4, channel: '抖音', enterprise: '新消费品牌...', score: 1204, comments: 88, shares: 150, collections: 300, original: '当前新消费品牌的核心问题在于如何建立品牌护城河。单纯依赖流量投放的模式已经走到尽头，必须回归产品和用户体验的本质，通过情感连接建立忠诚度。'},
             ],
             rewrittenResults: (originalText) => [
                 { id: 1, text: `企业基业长青的一个关键议题在于接班人，这应该是一次**主动接棒**，是一次更好的成长，更是要求企业家二代需要立刻立人“**主动传承**”的精神，延续父辈对创业精神的坚守，同时也要做好父辈积累的资金、人脉与品牌的**传承**，实现现代的成为新版“创二代”。`},
@@ -393,14 +618,33 @@
         let finalSelections = {}; // { originalId: rewrittenText }
 
         const views = { step1: document.getElementById('view-step-1'), step2: document.getElementById('view-step-2'), step3: document.getElementById('view-step-3'), step4: document.getElementById('view-step-4'), loading: document.getElementById('view-loading'), };
-        const indicators = { step1: document.getElementById('step-1-indicator'), step2: document.getElementById('step-2-indicator'), step3: document.getElementById('step-3-indicator'), step4: document.getElementById('step-4-indicator'), };
 
         const goToStep = (stepNumber) => {
             Object.values(views).forEach(v => v.classList.add('hidden'));
             if (views[`step${stepNumber}`]) views[`step${stepNumber}`].classList.remove('hidden');
-            Object.values(indicators).forEach(ind => ind.classList.remove('active', 'completed'));
-            for(let i = 1; i < stepNumber; i++) indicators[`step${i}`].classList.add('completed');
-            indicators[`step${stepNumber}`].classList.add('active');
+            
+            // 更新改写功能专用的步骤指示器
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById(`rewrite-step-${i}-indicator`);
+                if (indicator) {
+                    const circle = indicator.querySelector('div');
+                    const text = indicator.querySelector('span');
+                    
+                    if (i < stepNumber) {
+                        // 已完成的步骤
+                        circle.className = 'w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold';
+                        text.className = 'ml-2 text-sm text-green-600 font-medium';
+                    } else if (i === stepNumber) {
+                        // 当前活跃步骤
+                        circle.className = 'w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold';
+                        text.className = 'ml-2 text-sm text-green-600 font-medium';
+                    } else {
+                        // 未完成的步骤
+                        circle.className = 'w-6 h-6 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-xs font-bold';
+                        text.className = 'ml-2 text-sm text-gray-500';
+                    }
+                }
+            }
         };
 
         const showLoading = (text, duration, callback) => {
@@ -614,7 +858,354 @@
         document.getElementById('modal-close-btn').addEventListener('click', hideModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
 
+        // Tasks Modal Logic
+        const tasksModal = document.getElementById('tasks-modal');
+        const tasksModalContent = tasksModal.querySelector('.modal-content');
+        const showTasksModal = () => { tasksModal.classList.remove('hidden'); setTimeout(() => { tasksModal.classList.remove('bg-opacity-0'); tasksModalContent.classList.remove('scale-95', 'opacity-0'); }, 10); };
+        const hideTasksModal = () => { tasksModal.classList.add('bg-opacity-0'); tasksModalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => tasksModal.classList.add('hidden'), 300); };
+        document.getElementById('tasks-modal-close-btn').addEventListener('click', hideTasksModal);
+        tasksModal.addEventListener('click', (e) => { if (e.target === tasksModal) hideTasksModal(); });
+
+        // WeChat Users Modal Logic
+        const wechatUsersModal = document.getElementById('wechat-users-modal');
+        const wechatUsersModalContent = wechatUsersModal.querySelector('.modal-content');
+        const showWechatUsersModal = () => { wechatUsersModal.classList.remove('hidden'); setTimeout(() => { wechatUsersModal.classList.remove('bg-opacity-0'); wechatUsersModalContent.classList.remove('scale-95', 'opacity-0'); }, 10); };
+        const hideWechatUsersModal = () => { wechatUsersModal.classList.add('bg-opacity-0'); wechatUsersModalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => wechatUsersModal.classList.add('hidden'), 300); };
+        document.getElementById('wechat-users-modal-close-btn').addEventListener('click', hideWechatUsersModal);
+        wechatUsersModal.addEventListener('click', (e) => { if (e.target === wechatUsersModal) hideWechatUsersModal(); });
+
+        // 模拟历史任务数据
+        let scheduledTasks = [
+            {
+                id: 1,
+                type: '定时报告',
+                frequency: '每天',
+                time: '09:00',
+                status: '运行中',
+                createdAt: '2024-01-15 14:30',
+                nextRun: '2024-01-16 09:00'
+            },
+            {
+                id: 2,
+                type: '定时报告',
+                frequency: '每周',
+                time: '15:00',
+                weekday: '每周一',
+                status: '暂停',
+                createdAt: '2024-01-10 16:20',
+                nextRun: '2024-01-22 15:00'
+            }
+        ];
+
+        // 微信用户数据
+        let wechatUsers = [
+            {
+                id: 1,
+                name: '张经理',
+                wechat: 'zhang_manager',
+                selected: true
+            },
+            {
+                id: 2,
+                name: '李总监',
+                wechat: '13812345678',
+                selected: false
+            }
+        ];
+
+        function renderScheduledTasks() {
+            const container = document.getElementById('tasks-container');
+            
+            if (scheduledTasks.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                        <p>暂无定时任务</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    ${scheduledTasks.map(task => `
+                        <div class="border rounded-lg p-4 bg-gray-50">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full ${task.status === '运行中' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${task.status}</span>
+                                        <span class="text-sm font-medium text-gray-900">${task.type}</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p><span class="font-medium">频率:</span> ${task.frequency}${task.weekday ? ' (' + task.weekday + ')' : ''}</p>
+                                        <p><span class="font-medium">时间:</span> ${task.time}</p>
+                                        <p><span class="font-medium">微信推送:</span> ${task.wechatUsers || '无'}</p>
+                                        <p><span class="font-medium">创建时间:</span> ${task.createdAt}</p>
+                                        <p><span class="font-medium">下次执行:</span> ${task.nextRun}</p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button onclick="toggleTask(${task.id})" class="px-3 py-1 text-xs font-medium rounded ${task.status === '运行中' ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' : 'bg-green-100 text-green-800 hover:bg-green-200'} transition-colors">
+                                        ${task.status === '运行中' ? '暂停' : '启动'}
+                                    </button>
+                                    <button onclick="cancelTask(${task.id})" class="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-800 hover:bg-red-200 transition-colors">
+                                        取消
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        window.toggleTask = function(taskId) {
+            const task = scheduledTasks.find(t => t.id === taskId);
+            if (task) {
+                task.status = task.status === '运行中' ? '暂停' : '运行中';
+                renderScheduledTasks();
+            }
+        };
+
+        window.cancelTask = function(taskId) {
+            if (confirm('确定要取消这个定时任务吗？')) {
+                scheduledTasks = scheduledTasks.filter(t => t.id !== taskId);
+                renderScheduledTasks();
+            }
+        };
+
+        // 微信用户管理功能
+        function renderWechatUsersList() {
+            const container = document.getElementById('wechat-users-list');
+            
+            if (wechatUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-400 text-xs py-2">
+                        请先添加微信用户
+                    </div>
+                `;
+                updateSelectedUsersCount();
+                return;
+            }
+
+            container.innerHTML = wechatUsers.map(user => `
+                <label class="flex items-center p-2 rounded hover:bg-gray-100 cursor-pointer">
+                    <input type="checkbox" ${user.selected ? 'checked' : ''} 
+                           onchange="toggleWechatUser(${user.id})" 
+                           class="h-3 w-3 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                    <div class="ml-2 flex-1 min-w-0">
+                        <p class="text-xs font-medium text-gray-900 truncate">${user.name}</p>
+                        <p class="text-xs text-gray-500 truncate">${user.wechat}</p>
+                    </div>
+                </label>
+            `).join('');
+            
+            updateSelectedUsersCount();
+        }
+
+        function renderWechatUsersManagementList() {
+            const container = document.getElementById('wechat-users-management-list');
+            
+            if (wechatUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-400 text-sm py-4">
+                        暂无微信用户，请先添加用户
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = wechatUsers.map(user => `
+                <div class="flex items-center justify-between p-3 bg-white rounded border">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">${user.name}</p>
+                        <p class="text-xs text-gray-500">${user.wechat}</p>
+                    </div>
+                    <button onclick="removeWechatUser(${user.id})" 
+                            class="ml-3 px-2 py-1 text-xs font-medium rounded bg-red-100 text-red-800 hover:bg-red-200 transition-colors">
+                        删除
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function updateSelectedUsersCount() {
+            const count = wechatUsers.filter(user => user.selected).length;
+            document.getElementById('selected-users-count').textContent = count;
+        }
+
+        window.toggleWechatUser = function(userId) {
+            const user = wechatUsers.find(u => u.id === userId);
+            if (user) {
+                user.selected = !user.selected;
+                updateSelectedUsersCount();
+            }
+        };
+
+        window.removeWechatUser = function(userId) {
+            if (confirm('确定要删除这个用户吗？')) {
+                wechatUsers = wechatUsers.filter(u => u.id !== userId);
+                renderWechatUsersManagementList();
+                renderWechatUsersList();
+            }
+        };
+
+        function addWechatUser() {
+            const nameInput = document.getElementById('new-user-name');
+            const wechatInput = document.getElementById('new-user-wechat');
+            
+            const name = nameInput.value.trim();
+            const wechat = wechatInput.value.trim();
+            
+            if (!name || !wechat) {
+                alert('请填写完整的用户信息');
+                return;
+            }
+
+            // 检查是否已存在
+            if (wechatUsers.some(u => u.wechat === wechat)) {
+                alert('该微信号已存在');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                wechat: wechat,
+                selected: false
+            };
+
+            wechatUsers.push(newUser);
+            renderWechatUsersManagementList();
+            renderWechatUsersList();
+
+            // 清空输入框
+            nameInput.value = '';
+            wechatInput.value = '';
+        }
+
         // 新增功能的事件监听器
+        
+        // 微信推送设置已集成到定时设置中
+
+        document.getElementById('manage-wechat-users-btn').addEventListener('click', () => {
+            renderWechatUsersManagementList();
+            showWechatUsersModal();
+        });
+
+        document.getElementById('add-wechat-user-btn').addEventListener('click', addWechatUser);
+
+        document.getElementById('wechat-users-save-btn').addEventListener('click', () => {
+            renderWechatUsersList();
+            hideWechatUsersModal();
+        });
+
+        // 支持回车键添加用户
+        document.getElementById('new-user-name').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addWechatUser();
+            }
+        });
+
+        document.getElementById('new-user-wechat').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addWechatUser();
+            }
+        });
+        
+        // 报告设置功能按钮
+        document.getElementById('view-scheduled-tasks-btn').addEventListener('click', () => {
+            renderScheduledTasks();
+            showTasksModal();
+        });
+
+        document.getElementById('start-monitoring-btn').addEventListener('click', () => {
+            const instantReport = document.getElementById('instant-report').checked;
+            const scheduledReport = document.getElementById('scheduled-report').checked;
+            
+            if (!instantReport && !scheduledReport) {
+                alert('请至少选择一种报告生成方式');
+                return;
+            }
+            
+            let settingsText = '设置已生效：\n';
+            
+            if (instantReport) {
+                settingsText += '• 即时生成报告已启用\n';
+            }
+            
+            if (scheduledReport) {
+                const frequency = document.getElementById('schedule-frequency').value;
+                const hour = document.getElementById('schedule-hour').value;
+                const weekday = document.getElementById('schedule-weekday').value;
+                
+                // 检查微信推送用户
+                const selectedUsers = wechatUsers.filter(user => user.selected);
+                if (selectedUsers.length === 0) {
+                    const shouldContinue = confirm('您还没有选择微信推送对象。\n是否继续生效设置？（只会生成报告，不会推送）');
+                    if (!shouldContinue) {
+                        return;
+                    }
+                }
+                
+                settingsText += '• 定时生成报告已启用\n';
+                settingsText += `  - 频率: ${frequency === 'daily' ? '每天' : '每周'}\n`;
+                settingsText += `  - 时间: ${hour}:00\n`;
+                
+                if (frequency === 'weekly') {
+                    const weekdayNames = ['每周日', '每周一', '每周二', '每周三', '每周四', '每周五', '每周六'];
+                    settingsText += `  - 日期: ${weekdayNames[weekday]}\n`;
+                }
+                
+                if (selectedUsers.length > 0) {
+                    settingsText += `  - 微信推送: ${selectedUsers.map(u => u.name).join('、')}\n`;
+                }
+                
+                // 模拟添加新任务到历史任务列表
+                const newTask = {
+                    id: Date.now(),
+                    type: '定时报告',
+                    frequency: frequency === 'daily' ? '每天' : '每周',
+                    time: hour + ':00',
+                    weekday: frequency === 'weekly' ? ['每周日', '每周一', '每周二', '每周三', '每周四', '每周五', '每周六'][weekday] : null,
+                    status: '运行中',
+                    createdAt: new Date().toLocaleString('zh-CN'),
+                    nextRun: getNextRunTime(frequency, hour, weekday),
+                    wechatUsers: selectedUsers.length > 0 ? selectedUsers.map(u => u.name).join('、') : '无'
+                };
+                
+                scheduledTasks.push(newTask);
+            }
+            
+            alert(settingsText);
+        });
+
+        function getNextRunTime(frequency, hour, weekday) {
+            const now = new Date();
+            const nextRun = new Date();
+            
+            if (frequency === 'daily') {
+                nextRun.setHours(parseInt(hour), 0, 0, 0);
+                if (nextRun <= now) {
+                    nextRun.setDate(nextRun.getDate() + 1);
+                }
+            } else {
+                const targetWeekday = parseInt(weekday);
+                const currentWeekday = now.getDay();
+                let daysUntilTarget = (targetWeekday - currentWeekday + 7) % 7;
+                
+                if (daysUntilTarget === 0 && now.getHours() >= parseInt(hour)) {
+                    daysUntilTarget = 7;
+                }
+                
+                nextRun.setDate(now.getDate() + daysUntilTarget);
+                nextRun.setHours(parseInt(hour), 0, 0, 0);
+            }
+            
+            return nextRun.toLocaleString('zh-CN');
+        }
         
         // 定时报告切换
         document.getElementById('scheduled-report').addEventListener('change', function() {
@@ -623,6 +1214,16 @@
                 scheduleContainer.classList.remove('hidden');
             } else {
                 scheduleContainer.classList.add('hidden');
+            }
+        });
+
+        // 定时频率选择切换
+        document.getElementById('schedule-frequency').addEventListener('change', function() {
+            const weeklyContainer = document.getElementById('weekly-day-container');
+            if (this.value === 'weekly') {
+                weeklyContainer.classList.remove('hidden');
+            } else {
+                weeklyContainer.classList.add('hidden');
             }
         });
 
@@ -640,7 +1241,16 @@
         // 开始生成按钮的处理逻辑
         document.getElementById('start-generation-btn').addEventListener('click', () => {
             const executionMode = document.querySelector('input[name="execution-mode"]:checked').value;
-            const selectedChannel = document.getElementById('channel-select').value;
+            const selectedChannels = Array.from(document.querySelectorAll('input[name="rewrite-channel"]:checked')).map(cb => cb.value);
+            
+            if (selectedChannels.length === 0) {
+                alert('请选择至少一个渠道');
+                return;
+            }
+            
+            const channelText = selectedChannels.length === 1 ? 
+                getChannelName(selectedChannels[0]) : 
+                `${selectedChannels.length}个渠道`;
             
             if (executionMode === 'one-click') {
                 // 一键生成模式
@@ -655,12 +1265,23 @@
                 });
             } else {
                 // 分步执行模式
-                showLoading(`正在搜索${selectedChannel === 'all' ? '全网' : selectedChannel}内容，请稍候...`, 2000, () => {
+                showLoading(`正在搜索${channelText}内容，请稍候...`, 2000, () => {
                     populateResultsTable();
                     goToStep(2);
                 });
             }
         });
+
+        function getChannelName(value) {
+            const channelNames = {
+                'douyin': '抖音',
+                'xiaohongshu': '小红书',
+                'bilibili': 'B站',
+                'kuaishou': '快手',
+                'zhihu': '知乎'
+            };
+            return channelNames[value] || value;
+        }
 
         function populateOneClickResults() {
             finalSelections = {};
@@ -673,6 +1294,9 @@
 
         // Initial state
         goToStep(1);
+        
+        // 初始化微信用户列表
+        renderWechatUsersList();
     });
     </script>
 </body>
