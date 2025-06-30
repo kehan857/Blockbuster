@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Cool Blues (#EFF6FF, #3B82F6, #1E40AF, #111827) -->
+    <!-- Application Structure Plan: 本应用设计为一个单页、多步骤的交互式原型，旨在精确模拟用户在图片中展示的四步操作流程。用户通过点击按钮在不同视图间切换，模拟从任务设定到内容生成的完整旅程。1. **导航/步骤指示器**: 清晰展示用户当前所处步骤。2. **步骤一：任务设定**: 一个表单，用于定义监控和改写参数。3. **步骤二：搜索结果**: 一个可交互的表格，支持多选，展示AI搜索和过滤后的内容列表。4. **步骤三：批量改写**: 一个列表视图，展示所有被选中内容的多版本改写，并支持为每个原文选择一个最佳改写。5. **步骤四：确认输出**: 最终产出物的确认页面，模拟批量存入知识库的场景。这个结构紧密贴合了用户的视觉稿和新需求，确保演示的直观性和相关性。 -->
+    <!-- Visualization & Content Choices: 1. **任务设定**: Goal: Configure. Method: 使用标准的HTML表单元素，配合Tailwind CSS美化。2. **搜索结果**: Goal: Explore & Select. Method: HTML表格增加复选框实现多选，通过JS实现动态渲染和交互。3. **批量改写**: Goal: Compare & Select. Method: 使用卡片列表布局，每个卡片包含原文和多个可选择的改写版本（通过单选框实现），直观展示AI的改写能力。4. **确认输出**: Goal: Review & Confirm. Method: 卡片式布局，汇总展示最终选定的所有文案，模拟存入知识库前的最后审核。所有元素均通过HTML/Tailwind/JS实现，无任何SVG或图表库，完全符合原型演示的要求。 -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>天九共享AI爆款内容生成器 - 交互式原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .step-indicator {
+            transition: all 0.4s ease;
+        }
+        .step-indicator.active {
+            background-color: #3B82F6;
+            color: white;
+            font-weight: bold;
+        }
+        .step-indicator.completed {
+            background-color: #1E40AF;
+            color: white;
+        }
+        .form-input {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .table-row-hover:hover {
+            background-color: #EFF6FF;
+        }
+        .table-row-selected {
+            background-color: #DBEAFE !important;
+        }
+        .loader {
+            border-top-color: #3B82F6;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 执行方式卡片样式 */
+        .execution-mode-card {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .execution-mode-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .execution-mode-card input[type="radio"]:checked + div {
+            color: #ea580c;
+        }
+
+        .execution-mode-card:has(input[type="radio"]:checked) {
+            border-color: #fed7aa !important;
+            background-color: #fff7ed;
+        }
+
+        /* 步骤进度条样式 */
+        .step-progress-line {
+            transition: background-color 0.3s ease;
+        }
+
+        .step-progress-number {
+            transition: all 0.3s ease;
+        }
+
+        .step-progress-number.active {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div id="app" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">天九共享AI爆款内容生成器</h1>
+            <p class="mt-2 text-lg text-gray-600">交互式产品原型</p>
+        </header>
+
+        <!-- Step Indicator -->
+        <div id="step-navigation" class="flex items-center justify-center border border-gray-200 bg-white rounded-full shadow-sm p-2 mb-10">
+            <div id="step-1-indicator" class="step-indicator active w-1/4 text-center rounded-full px-3 py-2">
+                <span class="font-medium">第一步:</span> <span class="hidden sm:inline">主题设定</span>
+            </div>
+            <div id="step-2-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
+                <span class="font-medium">第二步:</span> <span class="hidden sm:inline">搜索过滤</span>
+            </div>
+            <div id="step-3-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
+                <span class="font-medium">第三步:</span> <span class="hidden sm:inline">批量改写</span>
+            </div>
+            <div id="step-4-indicator" class="step-indicator w-1/4 text-center rounded-full px-3 py-2 text-gray-500">
+                <span class="font-medium">第四步:</span> <span class="hidden sm:inline">确认输出</span>
+            </div>
+        </div>
+
+        <!-- App Views -->
+        <div id="app-views">
+            <!-- Step 1: Settings -->
+            <div id="view-step-1">
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                    <!-- 页面标题 -->
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+                        <h2 class="text-2xl font-bold text-center">监控爆款主题设定</h2>
+                        <p class="text-center text-blue-100 mt-2">配置监控参数，选择执行方式</p>
+                    </div>
+
+                    <div class="p-6 sm:p-8">
+                        <!-- 步骤指示器 -->
+                        <div class="flex items-center justify-center mb-8">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                                    <span class="ml-2 text-sm text-gray-600">基础配置</span>
+                                </div>
+                                <div class="w-8 h-px bg-gray-300"></div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                                    <span class="ml-2 text-sm text-gray-500">执行方式</span>
+                                </div>
+                                <div class="w-8 h-px bg-gray-300"></div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                                    <span class="ml-2 text-sm text-gray-500">报告设置</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第一步：基础配置 -->
+                        <div class="mb-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">1</div>
+                                <h3 class="text-lg font-semibold text-gray-800">基础配置</h3>
+                            </div>
+                            
+                            <!-- 监控配置 -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        监控目标
+                                    </h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="channel-select" class="block text-sm font-medium text-gray-700 mb-1">渠道选择</label>
+                                            <select id="channel-select" class="form-input block w-full rounded-md border-gray-300 shadow-sm">
+                                                <option value="all">全渠道</option>
+                                                <option value="douyin">抖音</option>
+                                                <option value="xiaohongshu">小红书</option>
+                                                <option value="weixin">微信公众号</option>
+                                                <option value="bilibili">B站</option>
+                                                <option value="kuaishou">快手</option>
+                                                <option value="zhihu">知乎</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="hot-keywords" class="block text-sm font-medium text-gray-700 mb-1">爆款关键词</label>
+                                            <input type="text" id="hot-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="创二代, 基业长青, 情感" placeholder="请输入关键词，用逗号分隔">
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-3">
+                                            <div>
+                                                <label for="extract-count" class="block text-sm font-medium text-gray-700 mb-1">提取数量</label>
+                                                <input type="number" id="extract-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="11">
+                                            </div>
+                                            <div>
+                                                <label for="likes-filter" class="block text-sm font-medium text-gray-700 mb-1">点赞过滤</label>
+                                                <input type="number" id="likes-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="50">
+                                            </div>
+                                            <div>
+                                                <label for="comments-filter" class="block text-sm font-medium text-gray-700 mb-1">评论过滤</label>
+                                                <input type="number" id="comments-filter" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="10">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                                        <svg class="w-4 h-4 mr-2 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                        </svg>
+                                        改写规则
+                                    </h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="rewrite-keywords" class="block text-sm font-medium text-gray-700 mb-1">文案改写关键词</label>
+                                            <input type="text" id="rewrite-keywords" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="主动接棒, 传承" placeholder="请输入改写关键词，用逗号分隔">
+                                        </div>
+                                        <div>
+                                            <label for="rewrite-count" class="block text-sm font-medium text-gray-700 mb-1">文案生成篇数</label>
+                                            <input type="number" id="rewrite-count" class="form-input block w-full rounded-md border-gray-300 shadow-sm" value="4" min="1" max="10">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第二步：执行方式 -->
+                        <div class="mb-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">2</div>
+                                <h3 class="text-lg font-semibold text-gray-800">执行方式</h3>
+                            </div>
+                            
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-orange-200 transition-colors execution-mode-card">
+                                        <input type="radio" name="execution-mode" value="one-click" class="mt-1 h-4 w-4 text-orange-600 border-gray-300 focus:ring-orange-500" checked>
+                                        <div class="ml-3">
+                                            <span class="block text-sm font-medium text-gray-900">一键生成改写文案</span>
+                                            <span class="block text-xs text-gray-500 mt-1">自动完成所有步骤，快速生成结果</span>
+                                        </div>
+                                    </label>
+                                    <label class="flex items-start cursor-pointer p-3 border-2 border-transparent rounded-lg hover:border-orange-200 transition-colors execution-mode-card">
+                                        <input type="radio" name="execution-mode" value="step-by-step" class="mt-1 h-4 w-4 text-orange-600 border-gray-300 focus:ring-orange-500">
+                                        <div class="ml-3">
+                                            <span class="block text-sm font-medium text-gray-900">分步执行</span>
+                                            <span class="block text-xs text-gray-500 mt-1">逐步进行，可精细控制每个环节</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 第三步：报告设置 -->
+                        <div class="mb-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">3</div>
+                                <h3 class="text-lg font-semibold text-gray-800">报告设置</h3>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <div class="space-y-4">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" id="instant-report" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500" checked>
+                                        <span class="ml-3 text-sm text-gray-700 font-medium">即时生成报告</span>
+                                        <span class="ml-2 text-xs text-gray-500">（生成完成后立即创建报告）</span>
+                                    </label>
+                                    
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" id="scheduled-report" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                                        <span class="ml-3 text-sm text-gray-700 font-medium">定时生成报告</span>
+                                        <span class="ml-2 text-xs text-gray-500">（设置特定时间生成报告）</span>
+                                    </label>
+                                    
+                                    <div id="schedule-time-container" class="ml-7 hidden">
+                                        <label for="schedule-time" class="block text-sm text-gray-600 mb-1">选择定时时间</label>
+                                        <input type="datetime-local" id="schedule-time" class="form-input block w-full max-w-xs text-sm rounded-md border-gray-300 shadow-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 开始按钮 -->
+                        <div class="text-center">
+                            <button id="start-generation-btn" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z"/>
+                                </svg>
+                                开始生成
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Search Results -->
+            <div id="view-step-2" class="hidden">
+                 <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-6 text-center">AI智能体全网搜索过滤</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3"><input type="checkbox" id="select-all-checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"></th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">序号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">渠道</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">内容摘要</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">点赞</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">评论</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">查看原文</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <button id="go-to-rewrite-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-full transition-transform transform hover:scale-105 shadow-lg" disabled>
+                            请先选择内容
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Rewriting -->
+            <div id="view-step-3" class="hidden">
+                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-6 text-center">批量文案改写</h2>
+                    <div id="rewrite-list-container" class="space-y-6 max-h-[60vh] overflow-y-auto p-2">
+                        <!-- JS will populate this -->
+                    </div>
+                     <div class="mt-8 text-center">
+                        <button id="go-to-preview-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                            下一步：确认输出
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Preview -->
+            <div id="view-step-4" class="hidden">
+                 <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
+                    <h2 class="text-2xl font-bold mb-6 text-center">确认输出到知识库</h2>
+                    <p class="text-center text-gray-600 mb-6">以下 <span id="final-count" class="font-bold text-blue-600"></span> 条内容将被存入知识库。</p>
+                    <div id="final-preview-container" class="space-y-4 max-h-[60vh] overflow-y-auto bg-gray-50 p-4 rounded-lg">
+                        <!-- JS will populate this -->
+                    </div>
+
+                    <div class="mt-8 text-center space-x-4">
+                        <button id="restart-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-10 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                            返回修改
+                        </button>
+                        <button id="confirm-save-btn" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-10 rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                            确认并存入知识库
+                        </button>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Loading View -->
+            <div id="view-loading" class="hidden">
+                 <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-center justify-center min-h-[400px]">
+                     <div class="loader h-16 w-16 rounded-full border-4 border-gray-200"></div>
+                     <p id="loading-text" class="mt-6 text-xl font-medium text-gray-700">正在搜索全网内容...</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Modal for Original Text -->
+        <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center p-4 z-50">
+            <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col transform scale-95 opacity-0">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-bold">原文内容</h3>
+                    <button id="modal-close-btn" class="text-gray-500 hover:text-gray-800">&times;</button>
+                </div>
+                <div id="modal-body" class="p-6 overflow-y-auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mockData = {
+            searchResults: [
+                { id: 1, channel: '抖音', enterprise: '企业基业长青的一个...', score: 16656, comments: 509, shares: 771, collections: 1074, original: '关键议题在于接班人，这应该是一次主动的传承，更是对下一代领导者成长的一次完美表达。我认为，家庭和事业的融合，对于培养具备全面视野和深厚情感的接班人至关重要。我一直觉得我们这一代和上一代之间有很多的共同点，我们一起往前走，未来可能我觉得我们这一代人还是相对来讲比较幸运的，首先有上一代或者两代人给我们打下一些基础。这个群体的比例比较小，另一方面是我们面对这个群体的样本...' },
+                { id: 2, channel: '小红书', enterprise: '创二代...', score: 61, comments: 106, shares: 707, collections: 753, original: '“创二代”不仅仅是财富的继承者，更是创新精神的接棒者。他们面临的挑战是如何在父辈的光环下，走出自己的道路，实现企业的二次增长和转型升级。' },
+                { id: 3, channel: '微信公众号', enterprise: '企业...', score: 83, comments: 16, shares: 2, collections: 8, original: '很多企业在谈论“基业长青”时，往往忽略了最核心的情感纽带。没有情感的传承，再好的制度设计也只是空壳。家族企业的魂，在于价值观的代代相传。'},
+                { id: 4, channel: 'B站', enterprise: '新消费品牌...', score: 1204, comments: 88, shares: 150, collections: 300, original: '当前新消费品牌的核心问题在于如何建立品牌护城河。单纯依赖流量投放的模式已经走到尽头，必须回归产品和用户体验的本质，通过情感连接建立忠诚度。'},
+            ],
+            rewrittenResults: (originalText) => [
+                { id: 1, text: `企业基业长青的一个关键议题在于接班人，这应该是一次**主动接棒**，是一次更好的成长，更是要求企业家二代需要立刻立人“**主动传承**”的精神，延续父辈对创业精神的坚守，同时也要做好父辈积累的资金、人脉与品牌的**传承**，实现现代的成为新版“创二代”。`},
+                { id: 2, text: `想让企业基业长青，接班人的选择至关重要。这不仅是一次**主动接棒**，更是新一代领导者成长的体现。要实现完美的**传承**，就需要将家庭与事业融合，培养出有全面视野和深厚情感的“创二代”。` },
+                { id: 3, text: `“创二代”的**主动传承**是企业持续发展的关键。他们需要**主动接棒**，在父辈打下的基础上，实现自我价值和企业的再次飞跃。这不仅是财富的**传承**，更是精神与责任的延续。` }
+            ]
+        };
+
+        let selectedIds = new Set();
+        let finalSelections = {}; // { originalId: rewrittenText }
+
+        const views = { step1: document.getElementById('view-step-1'), step2: document.getElementById('view-step-2'), step3: document.getElementById('view-step-3'), step4: document.getElementById('view-step-4'), loading: document.getElementById('view-loading'), };
+        const indicators = { step1: document.getElementById('step-1-indicator'), step2: document.getElementById('step-2-indicator'), step3: document.getElementById('step-3-indicator'), step4: document.getElementById('step-4-indicator'), };
+
+        const goToStep = (stepNumber) => {
+            Object.values(views).forEach(v => v.classList.add('hidden'));
+            if (views[`step${stepNumber}`]) views[`step${stepNumber}`].classList.remove('hidden');
+            Object.values(indicators).forEach(ind => ind.classList.remove('active', 'completed'));
+            for(let i = 1; i < stepNumber; i++) indicators[`step${i}`].classList.add('completed');
+            indicators[`step${stepNumber}`].classList.add('active');
+        };
+
+        const showLoading = (text, duration, callback) => {
+            Object.values(views).forEach(v => v.classList.add('hidden'));
+            document.getElementById('loading-text').textContent = text;
+            views.loading.classList.remove('hidden');
+            setTimeout(() => { views.loading.classList.add('hidden'); callback(); }, duration);
+        };
+        
+        // 原始事件监听器已被下方的新逻辑替代
+
+        // Step 2 Logic
+        const resultsTableBody = document.getElementById('results-table-body');
+        const goToRewriteBtn = document.getElementById('go-to-rewrite-btn');
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+
+        function updateRewriteButtonState() {
+            if (selectedIds.size > 0) {
+                goToRewriteBtn.disabled = false;
+                goToRewriteBtn.textContent = `批量改写 (${selectedIds.size} 项)`;
+            } else {
+                goToRewriteBtn.disabled = true;
+                goToRewriteBtn.textContent = '请先选择内容';
+            }
+        }
+
+        function populateResultsTable() {
+            resultsTableBody.innerHTML = '';
+            selectedIds.clear();
+            updateRewriteButtonState();
+            selectAllCheckbox.checked = false;
+            mockData.searchResults.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'table-row-hover';
+                row.dataset.resultId = item.id;
+                const channelColor = {
+                    '抖音': 'bg-red-100 text-red-800',
+                    '小红书': 'bg-pink-100 text-pink-800',
+                    '微信公众号': 'bg-green-100 text-green-800',
+                    'B站': 'bg-blue-100 text-blue-800',
+                    '快手': 'bg-yellow-100 text-yellow-800',
+                    '知乎': 'bg-purple-100 text-purple-800'
+                };
+                const channelClass = channelColor[item.channel] || 'bg-gray-100 text-gray-800';
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4"><input type="checkbox" data-id="${item.id}" class="row-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-medium rounded-full ${channelClass}">${item.channel || '未知'}</span></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.enterprise}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-bold">${item.score.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.comments.toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center"><button class="view-original-btn text-blue-600 hover:text-blue-800" data-id="${item.id}">查看</button></td>
+                `;
+                resultsTableBody.appendChild(row);
+            });
+        }
+        
+        resultsTableBody.addEventListener('click', (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+
+            if (e.target.classList.contains('view-original-btn')) {
+                 const id = parseInt(e.target.dataset.id);
+                 const item = mockData.searchResults.find(i => i.id === id);
+                 document.getElementById('modal-body').textContent = item.original;
+                 showModal();
+                 return;
+            }
+
+            const checkbox = row.querySelector('.row-checkbox');
+            if (e.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+            
+            const id = parseInt(checkbox.dataset.id);
+            if(checkbox.checked) {
+                selectedIds.add(id);
+                row.classList.add('table-row-selected');
+            } else {
+                selectedIds.delete(id);
+                row.classList.remove('table-row-selected');
+            }
+            
+            selectAllCheckbox.checked = selectedIds.size === mockData.searchResults.length;
+            updateRewriteButtonState();
+        });
+        
+        selectAllCheckbox.addEventListener('click', () => {
+            const isChecked = selectAllCheckbox.checked;
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            
+            rowCheckboxes.forEach(checkbox => {
+                const id = parseInt(checkbox.dataset.id);
+                const row = checkbox.closest('tr');
+                checkbox.checked = isChecked;
+                if (isChecked) {
+                    selectedIds.add(id);
+                    row.classList.add('table-row-selected');
+                } else {
+                    selectedIds.delete(id);
+                    row.classList.remove('table-row-selected');
+                }
+            });
+            updateRewriteButtonState();
+        });
+
+        goToRewriteBtn.addEventListener('click', () => {
+            if (selectedIds.size > 0) {
+                showLoading('正在生成改写文案...', 1500, () => {
+                    populateRewriteView();
+                    goToStep(3);
+                });
+            }
+        });
+
+        // Step 3 Logic
+        function populateRewriteView() {
+            const container = document.getElementById('rewrite-list-container');
+            container.innerHTML = '';
+            finalSelections = {};
+
+            const selectedItems = mockData.searchResults.filter(item => selectedIds.has(item.id));
+            selectedItems.forEach(originalItem => {
+                const card = document.createElement('div');
+                card.className = 'p-4 border rounded-lg bg-white shadow-sm';
+                
+                const rewrittenTexts = mockData.rewrittenResults(originalItem.original);
+                finalSelections[originalItem.id] = rewrittenTexts[0].text; // Default selection
+
+                let rewritesHtml = rewrittenTexts.map((rewrite, index) => `
+                    <div class="p-3 border-t mt-3">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="radio" name="rewrite_for_${originalItem.id}" value="${escape(rewrite.text)}" class="mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" ${index === 0 ? 'checked' : ''}>
+                            <span class="ml-3 text-sm text-gray-700">${rewrite.text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-600">$1</strong>')}</span>
+                        </label>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <p class="font-semibold text-gray-800">原文 ${originalItem.id}:</p>
+                    <p class="text-sm text-gray-500 mt-1 mb-2 bg-gray-50 p-2 rounded">${originalItem.original}</p>
+                    <p class="font-semibold text-gray-800">改写版本 (请选择一项):</p>
+                    ${rewritesHtml}
+                `;
+                container.appendChild(card);
+            });
+            
+            container.addEventListener('change', e => {
+                if (e.target.type === 'radio') {
+                    const originalId = parseInt(e.target.name.replace('rewrite_for_', ''));
+                    finalSelections[originalId] = unescape(e.target.value);
+                }
+            });
+        }
+        
+        document.getElementById('go-to-preview-btn').addEventListener('click', () => {
+             showLoading('正在准备预览...', 1000, () => {
+                populateFinalPreview();
+                goToStep(4);
+            });
+        });
+
+        // Step 4 Logic
+        function populateFinalPreview() {
+            const container = document.getElementById('final-preview-container');
+            container.innerHTML = '';
+            const finalCount = Object.keys(finalSelections).length;
+            document.getElementById('final-count').textContent = finalCount;
+
+            for (const originalId in finalSelections) {
+                const originalItem = mockData.searchResults.find(i => i.id == originalId);
+                const card = document.createElement('div');
+                card.className = 'p-4 bg-white rounded shadow-sm';
+                card.innerHTML = `
+                    <p class="text-xs text-gray-500">源自原文 #${originalId}: ${originalItem.enterprise}</p>
+                    <p class="mt-2 text-gray-800">${finalSelections[originalId].replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                `;
+                container.appendChild(card);
+            }
+        }
+        
+        document.getElementById('confirm-save-btn').addEventListener('click', () => {
+            const btn = document.getElementById('confirm-save-btn');
+            btn.textContent = '保存中...';
+            btn.disabled = true;
+            setTimeout(() => {
+                alert(`${Object.keys(finalSelections).length} 条内容已成功存入知识库!`);
+                btn.textContent = '确认并存入知识库';
+                btn.disabled = false;
+                resetApp();
+            }, 1500);
+        });
+
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            goToStep(3); // Go back to rewrite selection
+        });
+        
+        function resetApp() {
+            selectedIds.clear();
+            finalSelections = {};
+            updateRewriteButtonState();
+            goToStep(1);
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('modal');
+        const modalContent = modal.querySelector('.modal-content');
+        const showModal = () => { modal.classList.remove('hidden'); setTimeout(() => { modal.classList.remove('bg-opacity-0'); modalContent.classList.remove('scale-95', 'opacity-0'); }, 10); };
+        const hideModal = () => { modal.classList.add('bg-opacity-0'); modalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => modal.classList.add('hidden'), 300); };
+        document.getElementById('modal-close-btn').addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+
+        // 新增功能的事件监听器
+        
+        // 定时报告切换
+        document.getElementById('scheduled-report').addEventListener('change', function() {
+            const scheduleContainer = document.getElementById('schedule-time-container');
+            if (this.checked) {
+                scheduleContainer.classList.remove('hidden');
+            } else {
+                scheduleContainer.classList.add('hidden');
+            }
+        });
+
+        // 功能选择变化处理
+        document.querySelectorAll('input[name="execution-mode"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const isOneClick = this.value === 'one-click';
+                document.getElementById('start-generation-btn').textContent = 
+                    isOneClick ? '一键生成' : '开始生成';
+            });
+        });
+
+
+
+        // 开始生成按钮的处理逻辑
+        document.getElementById('start-generation-btn').addEventListener('click', () => {
+            const executionMode = document.querySelector('input[name="execution-mode"]:checked').value;
+            const selectedChannel = document.getElementById('channel-select').value;
+            
+            if (executionMode === 'one-click') {
+                // 一键生成模式
+                showLoading('正在一键生成改写文案，请稍候...', 4000, () => {
+                    // 模拟自动选择内容
+                    selectedIds.clear();
+                    mockData.searchResults.forEach(item => selectedIds.add(item.id));
+                    
+                    // 直接跳到最终预览
+                    populateOneClickResults();
+                    goToStep(4);
+                });
+            } else {
+                // 分步执行模式
+                showLoading(`正在搜索${selectedChannel === 'all' ? '全网' : selectedChannel}内容，请稍候...`, 2000, () => {
+                    populateResultsTable();
+                    goToStep(2);
+                });
+            }
+        });
+
+        function populateOneClickResults() {
+            finalSelections = {};
+            mockData.searchResults.forEach(originalItem => {
+                const rewrittenTexts = mockData.rewrittenResults(originalItem.original);
+                finalSelections[originalItem.id] = rewrittenTexts[0].text; // 自动选择第一个
+            });
+            populateFinalPreview();
+        }
+
+        // Initial state
+        goToStep(1);
+    });
+    </script>
+</body>
+</html>
