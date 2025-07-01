@@ -616,6 +616,7 @@
 
         let selectedIds = new Set();
         let finalSelections = {}; // { originalId: rewrittenText }
+        let currentExecutionMode = 'step-by-step'; // 'one-click' or 'step-by-step'
 
         const views = { step1: document.getElementById('view-step-1'), step2: document.getElementById('view-step-2'), step3: document.getElementById('view-step-3'), step4: document.getElementById('view-step-4'), loading: document.getElementById('view-loading'), };
 
@@ -840,12 +841,19 @@
         });
 
         document.getElementById('restart-btn').addEventListener('click', () => {
-            goToStep(3); // Go back to rewrite selection
+            if (currentExecutionMode === 'one-click') {
+                // 一键生成模式：回到首页
+                goToStep(1);
+            } else {
+                // 分步执行模式：回到改写选择页面
+                goToStep(3);
+            }
         });
         
         function resetApp() {
             selectedIds.clear();
             finalSelections = {};
+            currentExecutionMode = 'step-by-step';
             updateRewriteButtonState();
             goToStep(1);
         }
@@ -1247,6 +1255,9 @@
                 alert('请选择至少一个渠道');
                 return;
             }
+            
+            // 记录当前执行模式
+            currentExecutionMode = executionMode;
             
             const channelText = selectedChannels.length === 1 ? 
                 getChannelName(selectedChannels[0]) : 
